@@ -15,16 +15,46 @@ def message_box(text):
 
 
 class Logger:
-    def __init__(self):
+    """
+    Classe para registrar as teclas pressionadas e armazenar em um arquivo csv.
+
+    Args:
+        None
+
+    Attributes:
+        log (list): Lista para registrar temporariamente as teclas pressionadas.
+        windows_map (list): Lista para registrar o código das janelas abertas.
+        path_log (str): Caminho para o arquivo de log.
+        initial_minute (int): Minuto inicial.
+
+    Methods:
+        start(): Inicia o registro das teclas pressionadas.
+        on_key_press(event): Registra as teclas pressionadas.
+        minute_passed(): Verifica se o minuto mudou.
+        save_log(log): Salva o log em um arquivo csv.
+        create_path_log(): Cria o caminho para o arquivo de log baseado no dia atual.
+
+    Returns:
+        None
+
+    """
+
+    def __init__(self) -> None:
         self.log = []
         self.windows_map_path = "map/windows_map.csv"
         self.windows_map = self.read_windows_map()
         self.path_log = self.create_path_log()
         self.initial_minute = datetime.now().minute
 
-    def read_windows_map(self):
+    def read_windows_map(self) -> list:
+        """
+        Função para ler o arquivo de mapeamento de janelas.
+
+        Returns:
+            windows_map (list): Lista com o mapeamento de janelas.
+        """
+        windows_map = []
         if os.path.exists(self.windows_map_path):
-            windows_map = []
             with open(
                 self.windows_map_path, "r", newline="", encoding="utf-8"
             ) as csv_file:
@@ -32,13 +62,26 @@ class Logger:
                 for row in reader:
                     windows_map.append(dict(row))
 
-                return windows_map
+        return windows_map
 
-    def start(self):
+    def start(self) -> None:
+        """
+        Função para iniciar o registro das teclas pressionadas.
+        """
         keyboard.on_press(self.on_key_press)
         keyboard.wait()
 
-    def on_key_press(self, event):
+    def on_key_press(self, event) -> None:
+        """
+        Função para registrar as teclas pressionadas.
+        Possui verificador para interromper o registro.
+
+        Args:
+            event (KeyboardEvent): Evento de tecla pressionada.
+
+        Returns:
+            None
+        """
         window_title = gw.getActiveWindowTitle()
         if len([key for key in self.log if key[0] == 1]) > 100:
             keyboard.unhook_all()
@@ -76,7 +119,13 @@ class Logger:
             self.log = []
             print("Logging...")
 
-    def minute_passed(self):
+    def minute_passed(self) -> bool:
+        """
+        Verifica se o minuto mudou.
+
+        Returns:
+            bool: True se o minuto mudou, False caso contrário.
+        """
         actual_minute = datetime.now().minute
 
         if actual_minute != self.initial_minute:
@@ -85,8 +134,17 @@ class Logger:
         else:
             return False
 
-    def save_log(self, log):
-        self.save_windows_map()
+    def save_log(self, log) -> None:
+        """
+        Função para salvar o log em um arquivo csv.
+
+        Args:
+            log (list): Lista para registrar as teclas pressionadas.
+
+        Returns:
+            None
+        """
+        self.save_windows_map(self.windows_map)
 
         if os.path.exists(self.path_log):
             with open(self.path_log, "a", newline="", encoding="utf-8") as csv_file:
@@ -103,17 +161,33 @@ class Logger:
                 for register in log:
                     writer.writerow(register)
 
-    def create_path_log(self):
+    def create_path_log(self) -> str:
+        """
+        Cria o caminho para o arquivo de log baseado no dia atual.
+
+        Returns:
+            str: Caminho para o arquivo de log.
+        """
         date = datetime.now().strftime("%d-%m-%Y")
         return f"logs/log_{date}.csv"
 
-    def save_windows_map(self):
+    def save_windows_map(self, windows_map: list) -> None:
+        """
+        Salva o mapeamento de janelas em um arquivo csv.
+
+        Args:
+            windows_map (list): Lista com o mapeamento de janelas.
+
+        Returns:
+            None
+        """
+
         with open(self.windows_map_path, "w", newline="", encoding="utf-8") as csv_file:
             headers = ["code", "title"]
             writer = csv.DictWriter(csv_file, fieldnames=headers)
 
             writer.writeheader()
-            for row in self.windows_map:
+            for row in windows_map:
                 writer.writerow(row)
 
 
