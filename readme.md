@@ -37,7 +37,7 @@ pip install requirements.txt
 
 ## Saídas
 
-As saídas são duas, na pasta /logs serão salvos o log de teclas e código de janelas separados por dia. Já na pasta /map será salvo o mapeamento de janelas. 
+As saídas são duas, na pasta `/logs` serão salvos o log de teclas e código de janelas separados por dia. Já na pasta `/map` será salvo o mapeamento de janelas. 
 
 - Exemplo log_15-04-2023.csv
 
@@ -64,7 +64,7 @@ code,title
 
 ## Criando mapeamento de teclas
 
-Tendo em vista a variedade de teclados que trabalhamos, o script create_key_map.py pode auxiliar na criação do mapeamento de teclas.
+Tendo em vista a variedade de teclados que trabalhamos, o script `create_key_map.py` pode auxiliar na criação do mapeamento de teclas.
 
 
 ## Contribua
