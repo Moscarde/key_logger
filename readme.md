@@ -41,7 +41,7 @@ As saídas são duas, na pasta /logs serão salvos o log de teclas e código de 
 
 - Exemplo log_15-04-2023.csv
 
-  ```
+```
 window_code,key_code
 37,15
 37,15
@@ -50,7 +50,7 @@ window_code,key_code
 37,15
 83,35
 80,15
-  ```
+```
 
 - Exemplo windows_map.csv
 
